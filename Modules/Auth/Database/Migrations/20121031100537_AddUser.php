@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Database\Migrations;
+namespace Modules\Auth\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
@@ -15,11 +15,6 @@ class AddUser extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'name' => [
-                'type' => 'VARCHAR',
-                'constraint' => '255',
-                'null' => true
-            ],
             'email' => [
                 'type' => 'VARCHAR',
                 'unique' => true,
@@ -28,11 +23,6 @@ class AddUser extends Migration
             'password' => [
                 'type' => 'VARCHAR',
                 'constraint' => '255',
-            ],
-            'is_super_admin' => [
-                'type' => 'BOOLEAN',
-                'unique' => false,
-                'null' => true
             ],
             'created_at' => [
                 'type' => 'TIMESTAMP',

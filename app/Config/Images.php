@@ -41,4 +41,7 @@ class Images extends BaseConfig
         "width" => 800,
         "height" => 800
     ];
+
+    public $IMG_UPLOAD_PATH = WRITEPATH . "images";
+    public $IMG_URL_PATH = "/images/uploads";
 }

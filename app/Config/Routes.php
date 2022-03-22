@@ -46,11 +46,6 @@ $routes->get('/', 'Home::index');
  * You will have access to the $routes object within that file without
  * needing to reload it.
  */
-$routes->group("api", function ($routes) {
-    $routes->post("register", "Register::index");
-    $routes->post("login", "Login::index");
-    $routes->get("users", "User::index", ['filter' => 'authFilter']);
-});
 
 if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
     require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';

@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Controllers;
+namespace Modules\Auth\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
-use App\Models\UserModel;
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\Key;
-
+use Modules\Auth\Models\UserModel;
 
 class Login extends BaseController
 {
@@ -21,12 +20,13 @@ class Login extends BaseController
         $password = $this->request->getVar('password');
 
         $user = $userModel->where('email', $email)->first();
+        // echo $user->password;
 
         if (is_null($user)) {
             return $this->respond(['error' => 'Invalid username or password.'], 401);
         }
 
-        $pwd_verify = password_verify($password, $user['password']);
+        $pwd_verify = password_verify($password, $user->password);
 
         if (!$pwd_verify) {
             return $this->respond(['error' => 'Invalid username or password.'], 401);
@@ -37,12 +37,15 @@ class Login extends BaseController
         $exp = $iat + 3600;
 
         $payload = array(
-            "iss" => "Issuer of the JWT",
-            "aud" => "Audience that the JWT",
-            "sub" => "Subject of the JWT",
+            "iss" => "bookcreator",
+            "aud" => "webapp",
+            "sub" => "customer",
             "iat" => $iat, //Time the JWT issued at
             "exp" => $exp, // Expiration time of token
-            "email" => $user['email'],
+            "id" => $user->id,
+            "name" => $user->name,
+            "roles" => $user->role_ids,
+            "is_super_admin" => $user->is_super_admin
         );
 
         $token = JWT::encode($payload, $key, 'HS256');

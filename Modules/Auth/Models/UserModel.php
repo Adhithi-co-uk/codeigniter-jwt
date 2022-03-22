@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Modules\Auth\Models;
 
 use CodeIgniter\Model;
 
@@ -11,10 +11,10 @@ class UserModel extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
-    protected $returnType       = 'array';
+    protected $returnType       = \Modules\Auth\Entities\User::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['email', 'password'];
+    protected $allowedFields    = ['name', 'email', 'password'];
 
     // Dates
     protected $useTimestamps = false;
@@ -49,4 +49,20 @@ class UserModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    function search_list($search, $limit, $offset)
+    {
+        $builder = $this->db->table('users');
+        if (is_numeric($search)) {
+            $builder->where('id', $search);
+        } else {
+            $builder->like('users.name', $search, 'both');
+            $builder->orLike('email', $search, 'both');
+        }
+        $builder->join('images', 'images.imagable_id=users.id', 'left');
+        $builder->select('users.id,users.name,users.email,images.thumbnail,images.uri_path');
+        $builder->limit($limit, $offset);
+        $query = $builder->get();
+        return  $query->getResult();
+    }
 }

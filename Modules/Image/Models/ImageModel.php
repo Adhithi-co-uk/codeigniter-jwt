@@ -13,9 +13,9 @@ class ImageModel extends Model
     protected $returnType     = 'array';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['name', 'thumbnail', 'medium', 'imageable_type', 'imageable_id', 'image', 'ext', 'path', 'status'];
+    protected $allowedFields = ['name', 'thumbnail', 'medium', 'imageable_type', 'imageable_id', 'image', 'file_path', 'uri_path'];
 
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
@@ -24,8 +24,11 @@ class ImageModel extends Model
 
 
     protected $validationRules    = [
-        'name'     => 'required|alpha_numeric|min_length[3]',
-        'description'     => 'required|min_length[8]',
+        'name'     => 'required|min_length[3]',
+        'thumbnail'     => 'required|min_length[3]',
+        'medium'     => 'required|min_length[3]',
+        'file_path'     => 'required|min_length[5]',
+        'uri_path'     => 'required|min_length[5]',
     ];
 
     protected $validationMessages = [

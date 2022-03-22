@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filters;
+namespace Modules\Auth\Filters;
 
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
@@ -8,6 +8,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 use Exception;
 use \Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Modules\Auth\Entities\User;
 
 class AuthFilter implements FilterInterface
 {
@@ -49,9 +50,14 @@ class AuthFilter implements FilterInterface
 
         try {
             $decoded = JWT::decode($token, new Key($key, "HS256"));
+            helper('Modules\Auth\Auth');
+            loginUser(new User(['id' => $decoded->id, 'email' => $decoded->email]));
         } catch (Exception $ex) {
             $response = service('response');
-            $response->setBody($ex);
+            $response->setJSON([
+                'message' => "Invalid JWT"
+            ]);
+            log_message("error", $ex);
             $response->setStatusCode(401);
             return $response;
         }

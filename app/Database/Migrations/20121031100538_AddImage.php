@@ -28,32 +28,34 @@ class AddImage extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '255',
             ],
-            'ext' => [
+            'file_path' => [
                 'type' => 'VARCHAR',
                 'constraint' => '255',
             ],
-            'path' => [
-                'type' => 'VARCHAR',
-                'constraint' => '255',
-            ],
-            'status' => [
+            'uri_path' => [
                 'type' => 'VARCHAR',
                 'constraint' => '255',
             ],
             'imagable_type' => [
                 'type' => 'VARCHAR',
                 'constraint' => '255',
+                'null' => true
             ],
             'imagable_id' => [
                 'type' => 'BIGINT',
                 'constraint' => 255,
                 'unsigned' => true,
+                'null' => true
             ],
             'created_at' => [
                 'type' => 'TIMESTAMP',
                 'null' => true
             ],
             'updated_at' => [
+                'type' => 'TIMESTAMP',
+                'null' => true
+            ],
+            'deleted_at' => [
                 'type' => 'TIMESTAMP',
                 'null' => true
             ],

@@ -57,6 +57,8 @@ writable/logs/*
 writable/session/*
 !writable/session/index.html
 
+writable/images/*
+
 writable/uploads/*
 !writable/uploads/index.html
 

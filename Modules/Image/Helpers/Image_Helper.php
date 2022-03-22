@@ -2,34 +2,48 @@
 
 use CodeIgniter\Files\File;
 
-function resizeImage($uploadedPath, $subdir = "")
+function uploadImage($uploadedPath, $subdir = "")
 {
-    $path = WRITEPATH . "uploads/" . $uploadedPath;
-    $targetDir = $subdir == "" ? WRITEPATH . "images" : WRITEPATH . "images/" . $subdir;
-    $file = new \CodeIgniter\Files\File($path);
-    $image = \Config\Services::image();
-    $imageConfig = new \Config\Images();
-
-    $thumbnailSize = $imageConfig->thumnailSize;
-    $mediumSize = $imageConfig->mediumSize;
+    $imageInfo = [];
+    try {
 
 
-    $file = $file->move($targetDir);
-    print_r($file);
+        $path = WRITEPATH . "uploads/" . $uploadedPath;
+        $targetDir = $subdir == "" ? WRITEPATH . "images" : WRITEPATH . "images/" . $subdir;
+        $file = new \CodeIgniter\Files\File($path);
+        $image = \Config\Services::image();
+        $imageConfig = new \Config\Images();
 
-    $destination = File::getDestination($file->getPathname());
+        $thumbnailSize = $imageConfig->thumnailSize;
+        $mediumSize = $imageConfig->mediumSize;
 
-    // echo $destination;
-    $image
-        ->withFile($file->getPathname())
-        ->resize($thumbnailSize['width'], $thumbnailSize['height'], true)
-        ->save($destination);
+        $file = $file->move($targetDir);
+        $path = $file->getPathname();
 
-    $destination = File::getDestination($file->getPathname());
+        $imageInfo['name'] = $file->getFilename();
+        $imageInfo['file_path'] = $file->getPath();
+        $imageInfo['uri_path'] = $imageConfig->IMG_URL_PATH;
 
-    // echo $destination;
-    $image
-        ->withFile($file->getPathname())
-        ->resize($mediumSize['width'], $mediumSize['height'], true)
-        ->save($destination);
+        $destination = File::getDestination($path);
+
+        // echo $destination;
+        $image
+            ->withFile($file->getPathname())
+            ->resize($thumbnailSize['width'], $thumbnailSize['height'], true)
+            ->save($destination);
+
+        $file =  new File($destination);
+        $imageInfo['thumbnail'] = $file->getFilename();
+        $destination = File::getDestination($path);
+        $image
+            ->withFile($file->getPathname())
+            ->resize($mediumSize['width'], $mediumSize['height'], true)
+            ->save($destination);
+        $file =  new File($destination);
+        $imageInfo['medium'] = $file->getFilename();
+        return $imageInfo;
+    } catch (Exception $exc) {
+        log_message('error', $exc->getMessage());
+        return FALSE;
+    }
 }

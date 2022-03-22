@@ -23,7 +23,7 @@ class Filters extends BaseConfig
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
-        'authFilter' => \App\Filters\AuthFilter::class,
+        'authFilter' => \Modules\Auth\Filters\AuthFilter::class,
         'throttle' => \App\Filters\Throttle::class,
 
     ];

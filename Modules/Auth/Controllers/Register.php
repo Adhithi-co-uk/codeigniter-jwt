@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Controllers;
+namespace Modules\Auth\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
-use App\Models\UserModel;
-
+use Modules\Auth\Models\UserModel;
 
 class Register extends BaseController
 {
@@ -26,12 +25,15 @@ class Register extends BaseController
         if ($this->validate($rules)) {
             $model = new UserModel();
             $data = [
+                'name'    => $this->request->getVar('name'),
                 'email'    => $this->request->getVar('email'),
                 'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT)
             ];
-            $model->save($data);
-
-            return $this->respond(['message' => 'Registered Successfully'], 200);
+            if ($model->save($data)) {
+                return $this->respond(['message' => 'Registered Successfully'], 200);
+            } else {
+                return $this->respond(['message' => 'Failed to register'], 400);
+            }
         } else {
             $response = [
                 'errors' => $this->validator->getErrors(),
