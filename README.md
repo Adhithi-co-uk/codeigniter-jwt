@@ -11,7 +11,7 @@ This starter kit contains the role based security implementation as a module whi
 
 ## Setup
 
-Once you are familiar with the functionalities available in this starter kit you can start using it. For using the Auth module just the Modules\* directory to your route of your project directory and update the autoload config file to load the module. After that you could use it already.
+Once you are familiar with the functionalities available in this starter kit you can start using it. For using the Auth module just the Modules\\\* directory to your route of your project directory and update the autoload config file to load the module. After that you could use it already.
 
 ## Usage
 
