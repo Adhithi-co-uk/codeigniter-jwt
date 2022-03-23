@@ -23,14 +23,17 @@ class CreateUserRoleTable extends Migration
 			],
 			'created_at'       => [
 				'type'           => 'DATETIME',
+			],
+			'created_by'       => [
+				'type'           => 'INT',
 				'null'           => TRUE,
 			],
 			'updated_at'       => [
 				'type'           => 'DATETIME',
 				'null'           => TRUE,
 			],
-			'description'       => [
-				'type'           => 'TEXT',
+			'updated_by'       => [
+				'type'           => 'INT',
 				'null'           => TRUE,
 			],
 		]);

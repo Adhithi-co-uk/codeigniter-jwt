@@ -12,6 +12,17 @@ class User extends BaseController
 
     public function index()
     {
+        $name = $this->request->getVar("name");
+        $limit = $this->request->getVar("limit");
+        $offset = $this->request->getVar("offset");
+
+        if (!$limit) {
+            $limit = 10;
+        }
+        if (!$offset) {
+            $offset = 0;
+        }
+
         if (!hasPermission('user_manage')) {
             return $this->respond([
                 'message' => 'No access'
@@ -19,12 +30,13 @@ class User extends BaseController
         }
         $users = new UserModel();
         // return $this->respond(['users' => $users->select(['id', 'name', 'email', 'created_at'])->findAll()], 200);
-        return $this->respond($users->search_list("Nish", 10, 0));
+        return $this->respond($users->search_list($name, $limit, $offset));
     }
 
     public function me()
     {
-        helper("Modules/Auth/Auth");
-        return isLoggedIn();
+        $user = new UserModel();
+        $me = $user->select('id,name,email')->find($this->request->user->id)->with('roles')->with('image');
+        return $this->respond($me, 200);
     }
 }

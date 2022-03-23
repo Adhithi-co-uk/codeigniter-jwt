@@ -3,7 +3,6 @@
 namespace Modules\Auth\Entities;
 
 use CodeIgniter\Entity\Entity;
-use Modules\Auth\Models\PermissionModel;
 use Modules\Auth\Models\RoleModel;
 use Modules\Auth\Models\RolePermissionModel;
 use Modules\Auth\Models\UserRoleModel;
@@ -14,8 +13,6 @@ class User extends Entity
     protected $datamap = [];
     protected $dates   = ['created_at', 'updated_at', 'deleted_at'];
     protected $casts   = [];
-
-
 
     protected function getRoleIds()
     {
@@ -57,35 +54,36 @@ class User extends Entity
         foreach ($rolePermissions as $permission) {
             array_push($permissions, $permission->name);
         }
-        // print_r($permissions);
         return $permissions;
-        // $permissionModel = new PermissionModel();
-        // print_r($permissions);
-        // return $permissionModel->find($permissions);
     }
 
-    // protected function getImage()
-    // {
-    //     if ($this->image != null) {
-    //         return $this->image;
-    //     }
-    //     $imageModel = new ImageModel();
-    //     $images = $imageModel
-    //         ->where([
-    //             'imageable_type' => 'User',
-    //             'imageable_id' => $this->id
-    //         ])
-    //         ->findAll();
+    protected function getImage()
+    {
+        if ($this->image != null) {
+            return $this->image;
+        }
+        $imageModel = new ImageModel();
+        $images = $imageModel
+            ->where([
+                'imageable_type' => 'User',
+                'imageable_id' => $this->id
+            ])
+            ->findAll();
 
-    //     if (count($images) == 0) {
-    //         return new \stdClass();
-    //     }
-    //     $this->image = $images[0];
-    //     return $images[0];
-    // }
+        if (count($images) == 0) {
+            return new \stdClass();
+        }
+        $this->image = $images[0];
+        return $images[0];
+    }
 
-    // protected function getPassword()
-    // {
-    //     return "";
-    // }
+    //Call functions to load relationships then return the instance
+    public function with($name)
+    {
+        $functionName = 'get' . ucfirst($name);
+        if (method_exists($this, $functionName)) {
+            $this->$functionName();
+        }
+        return $this;
+    }
 }
