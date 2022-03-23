@@ -9,7 +9,7 @@ This Auth module is for adding role based security implementation for any CodeIg
 - Download the code and compy the Modules directory to the root of your project parallel to app directory
 - Update the app/config/autoload.php to include autoloading for the module as shown below
 
-````php
+```php
     public $psr4 = [
         APP_NAMESPACE => APPPATH, // For custom app namespace
         'Config'      => APPPATH . 'Config',
@@ -18,9 +18,10 @@ This Auth module is for adding role based security implementation for any CodeIg
         // 'Modules/Image' => ROOTPATH . 'Modules/Image'
     ];
 
-    ```
+```
+
 - Run the migrations using php spark migrate to create required tables **php spark migrate**
-- Run the seeder to populate sample users for testing  **php spark db:seed AuthData**
+- Run the seeder to populate sample users for testing **php spark db:seed AuthData**
 
 Now the auth module is integrated and you can start using it. See below usage instructions to know how to use it.
 
@@ -43,4 +44,7 @@ Additionally, make sure that the following extensions are enabled in your PHP:
 - [mbstring](http://php.net/manual/en/mbstring.installation.php)
 - [mysqlnd](http://php.net/manual/en/mysqlnd.install.php)
 - xml (enabled by default - don't turn it off)
-````
+
+```
+
+```
