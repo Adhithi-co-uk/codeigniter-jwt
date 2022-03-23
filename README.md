@@ -1,4 +1,4 @@
-# CodeIgniter 4 Application Starter Kit With JWT Rolebased Authentication
+# CodeIgniter 4 Starter Kit With JWT Rolebased Authentication
 
 ## What is CodeIgniter?
 
