@@ -1,17 +1,30 @@
-# CodeIgniter 4 Starter Kit With JWT Rolebased Authentication
+# JWT Rolebased Security module for CodeIgniter 4
 
-## What is CodeIgniter?
+## Why is this Module?
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](http://codeigniter.com).
+This Auth module is for adding role based security implementation for any CodeIgniter 4 applications. If you starting a new CodeIgniter project you can use this as a starter kit otherwise can use the Auth Module from this project and include in your project. This module contain database migrations and seeders to create sample users and roles.
 
-## Why is this Starter kit for?
+## Setup for existing projects
 
-This starter kit contains the role based security implementation as a module which you can use in your application. You can download and run the migrations and seeder to create database tables and populate test data then try the code.
+- Download the code and compy the Modules directory to the root of your project parallel to app directory
+- Update the app/config/autoload.php to include autoloading for the module as shown below
 
-## Setup
+````php
+    public $psr4 = [
+        APP_NAMESPACE => APPPATH, // For custom app namespace
+        'Config'      => APPPATH . 'Config',
+        'Modules\Auth' => ROOTPATH . 'Modules/Auth',
+        'Modules\Image' => ROOTPATH . 'Modules/Image',
+        // 'Modules/Image' => ROOTPATH . 'Modules/Image'
+    ];
 
-Once you are familiar with the functionalities available in this starter kit you can start using it. For using the Auth module just the _Modules_\\\* directory to your route of your project directory and update the autoload config file to load the module. After that you could use it already.
+    ```
+- Run the migrations using php spark migrate to create required tables **php spark migrate**
+- Run the seeder to populate sample users for testing  **php spark db:seed AuthData**
+
+Now the auth module is integrated and you can start using it. See below usage instructions to know how to use it.
+
+## Setup for new projects
 
 ## Usage
 
@@ -30,3 +43,4 @@ Additionally, make sure that the following extensions are enabled in your PHP:
 - [mbstring](http://php.net/manual/en/mbstring.installation.php)
 - [mysqlnd](http://php.net/manual/en/mysqlnd.install.php)
 - xml (enabled by default - don't turn it off)
+````
