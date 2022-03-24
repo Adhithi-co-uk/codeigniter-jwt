@@ -16,7 +16,6 @@ class UserModel extends Model
     protected $protectFields    = true;
     protected $allowedFields    = ['name', 'email', 'password'];
 
-
     // Dates
     protected $useTimestamps = false;
     protected $dateFormat    = 'datetime';

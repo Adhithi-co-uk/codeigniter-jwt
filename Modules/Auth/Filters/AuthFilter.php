@@ -50,8 +50,14 @@ class AuthFilter implements FilterInterface
 
         try {
             $decoded = JWT::decode($token, new Key($key, "HS256"));
+            // print_r($decoded);
             helper('Modules\Auth\Auth');
-            loginUser(new User(['id' => $decoded->id, 'email' => $decoded->email]));
+            loginUser(new User([
+                'id' => $decoded->id,
+                'name' => $decoded->name,
+                "roles" => $decoded->roles,
+                "is_super_admin" => $decoded->is_super_admin
+            ]));
         } catch (Exception $ex) {
             $response = service('response');
             $response->setJSON([

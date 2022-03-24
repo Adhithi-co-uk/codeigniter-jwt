@@ -19,7 +19,7 @@ class Login extends BaseController
         $email = $this->request->getVar('email');
         $password = $this->request->getVar('password');
 
-        $user = $userModel->where('email', $email)->first();
+        $user = $userModel->where('email', $email)->first()->with('role_ids');
         // echo $user->password;
 
         if (is_null($user)) {

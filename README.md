@@ -4,6 +4,8 @@
 
 This Auth module is for adding role based security implementation for any CodeIgniter 4 applications. If you starting a new CodeIgniter project you can use this as a starter kit otherwise can use the Auth Module from this project and include in your project. This module contain database migrations and seeders to create sample users and roles.
 
+Quick start guide for using the module is given below and the detail writeup is available at my blog [aboutfullstack.com](https://aboutfullstack.com) at [https://aboutfullstack.com/codeigniter/codeigniter-4-security-module-jwt-rolebased-permissions-etc/](https://aboutfullstack.com/codeigniter/codeigniter-4-security-module-jwt-rolebased-permissions-etc/)
+
 ## Setup for existing projects
 
 - Download the code and compy the Modules directory to the root of your project parallel to app directory

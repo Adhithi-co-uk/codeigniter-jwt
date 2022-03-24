@@ -36,7 +36,7 @@ class User extends BaseController
     public function me()
     {
         $user = new UserModel();
-        $me = $user->select('id,name,email')->find($this->request->user->id)->with('roles')->with('image');
+        $me = $user->select('id,name,email')->find($this->request->user->id)->with("roles")->with("images");
         return $this->respond($me, 200);
     }
 }

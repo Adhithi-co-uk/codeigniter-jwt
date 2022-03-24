@@ -13,41 +13,51 @@ class User extends Entity
     protected $datamap = [];
     protected $dates   = ['created_at', 'updated_at', 'deleted_at'];
     protected $casts   = [];
+    protected $attributes = [
+        'id'         => null,
+        'name'       => null,
+        'email'      => null,
+        'roles'      => null,
+        'password'   => null,
+        'created_at' => null,
+        'updated_at' => null,
+    ];
 
-    protected function getRoleIds()
+    protected function getRole_Ids()
     {
-        if ($this->role_ids != null) {
-            return $this->role_ids;
+        if (isset($this->attributes['role_ids'])) {
+            return $this->attributes['role_ids'];
         }
-
+        $this->attributes['role_ids'] = [];
         $userRoleModel = new UserRoleModel();
         $user_roles = $userRoleModel->where('user_id', $this->id)->select('role_id')->findAll();
-        $roles = [];
         foreach ($user_roles as $role) {
-            array_push($roles, $role->role_id);
+            array_push($this->attributes['role_ids'], $role->role_id);
         }
-        return $roles;
+        return $this->attributes['role_ids'];
     }
 
     protected function getRoles()
     {
-        if ($this->roles != null) {
-            return $this->roles;
+        if (isset($this->attributes['roles'])) {
+            return $this->attributes['roles'];
         }
         $roleModel = new RoleModel();
-
-        if (count($this->getRoleIds()) > 0) {
-            $roles = $roleModel->select('id,name,description')->find($this->getRoleIds());
+        $this->attributes['roles'] = [];
+        if (count($this->getRole_Ids()) > 0) {
+            $roles = $roleModel->select('id,name,description')->find($this->getRole_Ids());
+            foreach ($roles as $role) {
+                array_push($this->attributes['roles'], $role->toArray());
+            }
         }
-        $this->roles = $roles;
-        return $roles;
+        return $this->attributes['roles'];
     }
 
 
     protected function getPermissions()
     {
         $rolePermissionModel = new RolePermissionModel();
-        $rolePermissionModel->whereIn("role_permissions.role_id", $this->getRoleIds());
+        $rolePermissionModel->whereIn("role_permissions.role_id", $this->getRole_Ids());
         $rolePermissionModel->join('permissions', 'permissions.id = role_permissions.permission_id');
         $rolePermissions = $rolePermissionModel->select('permissions.name')->find();
         $permissions = [];
@@ -59,8 +69,8 @@ class User extends Entity
 
     protected function getImage()
     {
-        if ($this->image != null) {
-            return $this->image;
+        if (isset($this->attributes['image'])) {
+            return $this->attributes['image'];
         }
         $imageModel = new ImageModel();
         $images = $imageModel
@@ -73,11 +83,10 @@ class User extends Entity
         if (count($images) == 0) {
             return new \stdClass();
         }
-        $this->image = $images[0];
+        $this->attributes['image'] = $images[0];
         return $images[0];
     }
 
-    //Call functions to load relationships then return the instance
     public function with($name)
     {
         $functionName = 'get' . ucfirst($name);
