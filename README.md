@@ -27,9 +27,60 @@ Now the auth module is integrated and you can start using it. See below usage in
 
 ## Setup for new projects
 
+- Download this repository
+- Run **composer install** in the root of the project
+- Run the migrations using php spark migrate to create required tables **php spark migrate**
+- Run the seeder to populate sample users for testing **php spark db:seed AuthData**
+
+Now you are ready with the CodeIgniter starter kit with Role based authorization module.
+
 ## Usage
 
-The module contains filter to secure the route also some helper methods which can be used within the controller for securing the application.
+The module contains filter to secure the route also some helper methods which can be used within the controller to implement role / permission based logics.
+
+### Filters
+
+There are two filters available with this package. One is named **Throttle** and the other one is named **AuthFilter**. "Throttle" is used to avoid hackers trying multiple call (DoS Attack) to the login end point to try out different email / password combinations to gain access to the application. Currently 3 attempts is possible to the login end point with wrong username and password combination in one minute time span. You can change this in the file app/Filters/Throttle.php. "AuthFilter" is used in the routes protect the end point which can only be accessed by the logged in users. Below is the code from route config inside the Auth module.
+
+```php
+
+namespace Modules\Auth\Config;
+
+$routes->group('api', ['namespace' => 'Modules\Auth\Controllers'], function ($routes) {
+    $routes->post("register", "Register::index");
+    $routes->post("login", "Login::index");
+    $routes->get("users", "User::index", ['filter' => 'authFilter']);
+    $routes->get("users/me", "User::me", ['filter' => 'authFilter']);
+});
+
+```
+
+### Helper functions
+
+The helper functions are available for checking whether logged in user has got given role or permission. It is useful to implement permission based functionalities within the controllers. The following helper functions are available.
+
+- **hasRole($role_name)** - Checks whether the user got given role
+- **hasPermission($permission_name)** - Checks whether the user got given permission
+- **isLoggedIn()** - Return true/false based on whether user is logged in
+- **getUsername()** - Returns the Name of the logged in User.
+- **getUserid()** - Returns the id of the logged in user
+- **getUser()** - Returns the user instance of the logged in user with all attributes
+- **loginUser(User $user)** - Logs in the user. Used by the AuthFilter to set the User id to the request object after validating the JWT
+
+For using this function first needs to load the helper then can call this function as shown below.
+
+```php
+
+  helper('Modules\Auth\Auth');
+
+    if (!hasPermission('manage_user')) {
+        return $this->respond([
+            'status' => 'fail',
+            'message' => 'You don\'t have permission to access the data'
+        ], 403);
+    }
+
+```
 
 ## Server Requirements
 

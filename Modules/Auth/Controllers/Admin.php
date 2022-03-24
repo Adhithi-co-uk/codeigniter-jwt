@@ -33,12 +33,15 @@ class Admin extends Controller
     {
         $obj = new stdClass();
 
+        helper('Modules\Auth\Auth');
+
         if (!hasPermission('manage_user')) {
             return $this->respond([
                 'status' => 'fail',
                 'message' => 'You don\'t have permission to access the data'
             ], 403);
         }
+
         $request_body = json_decode(file_get_contents('php://input'));
         $page = $request_body->page;
         $limit = $request_body->limit;
