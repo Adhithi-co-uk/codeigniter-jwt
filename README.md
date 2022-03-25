@@ -42,7 +42,11 @@ The module contains filter to secure the route also some helper methods which ca
 
 ### Filters
 
-There are two filters available with this package. One is named **Throttle** and the other one is named **AuthFilter**. "Throttle" is used to avoid hackers trying multiple call (DoS Attack) to the login end point to try out different email / password combinations to gain access to the application. Currently 3 attempts is possible to the login end point with wrong username and password combination in one minute time span. You can change this in the file app/Filters/Throttle.php. "AuthFilter" is used in the routes protect the end point which can only be accessed by the logged in users. Below is the code from route config inside the Auth module.
+There are two filters available with this package. One is named **Throttle** and the other one is named **AuthFilter**.
+
+"Throttle" is used to avoid hackers trying multiple call (DoS Attack) to the login end point to try out different email / password combinations to gain access to the application. Currently 3 attempts is possible to the login end point with wrong username and password combination in one minute time span. You can change this in the file app/Filters/Throttle.php.
+
+"AuthFilter" is used in the routes protect the end point which can only be accessed by the logged in users. Below is the code from route config inside the Auth module. As seen below the authFilter if used without parameter will allow if user logged in to the application. AuthFilter accept permission names as optional parameter when passed it will check whether the user got the all the permissions passed before granting access. Multiple permissions can be passed as comma seperated values such as ['filter' => 'authFilter:manage_user,admin'].
 
 ```php
 
@@ -51,7 +55,7 @@ namespace Modules\Auth\Config;
 $routes->group('api', ['namespace' => 'Modules\Auth\Controllers'], function ($routes) {
     $routes->post("register", "Register::index");
     $routes->post("login", "Login::index");
-    $routes->get("users", "User::index", ['filter' => 'authFilter']);
+    $routes->get("users", "User::index", ['filter' => 'authFilter:user_manage']);
     $routes->get("users/me", "User::me", ['filter' => 'authFilter']);
 });
 
