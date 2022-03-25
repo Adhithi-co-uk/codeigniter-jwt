@@ -50,7 +50,6 @@ class AuthFilter implements FilterInterface
 
         try {
             $decoded = JWT::decode($token, new Key($key, "HS256"));
-            // print_r($decoded);
             helper('Modules\Auth\Auth');
             loginUser(new User([
                 'id' => $decoded->id,
@@ -58,6 +57,19 @@ class AuthFilter implements FilterInterface
                 "roles" => $decoded->roles,
                 "is_super_admin" => $decoded->is_super_admin
             ]));
+            if (isset($arguments) && count($arguments) > 0) {
+                helper('Modules\Auth\Auth');
+                foreach ($arguments as $permission) {
+                    if (!hasPermission($permission)) {
+                        $response = service('response');
+                        $response->setJSON([
+                            'message' => "Permission not granted"
+                        ]);
+                        $response->setStatusCode(401);
+                        return $response;
+                    }
+                }
+            }
         } catch (Exception $ex) {
             $response = service('response');
             $response->setJSON([

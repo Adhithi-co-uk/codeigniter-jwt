@@ -40,11 +40,11 @@ class AddImage extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '255',
             ],
-            'imagable_type' => [
+            'imageable_type' => [
                 'type' => 'VARCHAR',
                 'constraint' => '255',
             ],
-            'imagable_id' => [
+            'imageable_id' => [
                 'type' => 'BIGINT',
                 'constraint' => 255,
                 'unsigned' => true,

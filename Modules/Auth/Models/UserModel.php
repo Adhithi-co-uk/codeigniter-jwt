@@ -59,7 +59,7 @@ class UserModel extends Model
             $builder->like('users.name', $search, 'both');
             $builder->orLike('email', $search, 'both');
         }
-        $builder->join('images', 'images.imagable_id=users.id', 'left');
+        $builder->join('images', 'images.imageable_id=users.id', 'left');
         $builder->select('users.id,users.name,users.email,images.thumbnail,images.uri_path');
         $builder->limit($limit, $offset);
         $query = $builder->get();

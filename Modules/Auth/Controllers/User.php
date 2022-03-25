@@ -23,11 +23,11 @@ class User extends BaseController
             $offset = 0;
         }
 
-        if (!hasPermission('user_manage')) {
-            return $this->respond([
-                'message' => 'No access'
-            ], 403);
-        }
+        // if (!hasPermission('user_manage')) {
+        //     return $this->respond([
+        //         'message' => 'No access'
+        //     ], 403);
+        // }
         $users = new UserModel();
         // return $this->respond(['users' => $users->select(['id', 'name', 'email', 'created_at'])->findAll()], 200);
         return $this->respond($users->search_list($name, $limit, $offset));
