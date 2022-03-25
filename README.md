@@ -61,6 +61,8 @@ $routes->group('api', ['namespace' => 'Modules\Auth\Controllers'], function ($ro
 
 ```
 
+With the above configuration users/me route is accessible by any logged in users and users/ route is accessible by users having permission "user_manage".
+
 ### Helper functions
 
 The helper functions are available for checking whether logged in user has got given role or permission. It is useful to implement permission based functionalities within the controllers. The following helper functions are available.
